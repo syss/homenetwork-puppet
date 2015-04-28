@@ -1,0 +1,17 @@
+{
+  "CONTRIBUTORS.md": "bc5394197a4db96387981206935062a6",
+  "Changelog": "d89669f231f39cc92e054de4bc066db8",
+  "Gemfile": "7d83f3860619998abe17ab8e8dfa4415",
+  "LICENSE": "3528aa13fb7106a7fcf7b983eb5f30be",
+  "README.md": "12d39113425e5b9f7eb21f944c6c4518",
+  "Rakefile": "a5b7abcb5464770b8ee3c8900924782b",
+  "manifests/init.pp": "c94787f77579bead93e4ba9dd16386cf",
+  "manifests/params.pp": "2b5ce855c6558540cdb33e0f364d1d0f",
+  "metadata.json": "ac1f2fc51e64720b00ede7f81dcd821b",
+  "spec/classes/aptcacherng_init_spec.rb": "dbcc0c45abcb3f5ca8e5e1372ebd7858",
+  "spec/spec_helper.rb": "4f17ab8c2183b0a8871b7b0a284a15c6",
+  "templates/acng.conf.erb": "d2c4e6b8616a1fe6609162c27288d8a9",
+  "templates/security.conf.erb": "037770d319bfd1cd8e46967afbfca3f5",
+  "tests/init.pp": "92f5d13e3d31658bf01b2e86b106a31f",
+  "tests/params.pp": "d41d8cd98f00b204e9800998ecf8427e"
+}

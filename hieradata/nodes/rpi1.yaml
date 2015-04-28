@@ -1,3 +1,6 @@
 ---
 classes:
   - base::download_server
+  - aptcacherng
+
+aptcacherng::cachedir:  "/mnt/fts300gb/var/cache/apt-cacher-ng"
