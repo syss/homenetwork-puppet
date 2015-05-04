@@ -1,5 +1,12 @@
 class base::file_server {
 
+    cron { backup:
+            command => "rsync -aAXv --exclude={\"/dev/*\",\"/proc/*\",\"/sys/*\",\"/tmp/*\",\"/run/*\",\"/mnt/*\",\"/media/*\",\"/lost+found\",  \"/data\"} /* /data/data/HomeNetworkBackup/${fqdn}/backup-fs",
+            user    => root,
+            hour    => 3,
+            weekday => 1,
+    }
+
     file {'/etc/hdparm.conf':
         ensure  => file,
         content => file("$module_name/hdparm-file_server.conf"),
