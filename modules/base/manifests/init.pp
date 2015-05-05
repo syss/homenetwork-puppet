@@ -14,10 +14,4 @@ class base {
         ensure  => file,
         content => file("$module_name/01proxy"),
     }
-
-    service {'hdparm':
-        ensure  => running,
-        enable  => true,
-        subscribe => File['/etc/hdparm.conf'],
-    }
 }

@@ -11,7 +11,11 @@ class base::file_server {
         ensure  => file,
         content => file("$module_name/hdparm-file_server.conf"),
     }
-
+    service {'hdparm':
+        ensure  => running,
+        enable  => true,
+        subscribe => File['/etc/hdparm.conf'],
+    }
 
     #LABEL=DATA4     /data       ext4    auto,rw,relatime    0   0
     mount { 'DATA4':
