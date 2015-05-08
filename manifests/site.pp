@@ -22,13 +22,13 @@ node cubox {
         },
     }
 
-    bind::generate {'a-records':
-        zone        => 'sue.ss',
-        range       => '50-100',
-        record_type => 'A',
-        lhs         => 'wifi-$',
-        rhs         => '10.0.0.$',
-    }
+#    bind::generate {'a-records':
+#        zone        => 'sue.ss',
+#        range       => '50-100',
+#        record_type => 'A',
+#        lhs         => 'wifi-$',
+#        rhs         => '10.0.0.$',
+#    }
 
     bind::record {'CNAME ns0.sue.ss':
         zone        => 'sue.ss',
@@ -36,6 +36,25 @@ node cubox {
         hash_data   => {
             'ns0'       => { owner  => 'cubox', },
         }
+    }
+
+    class {'dhcp':
+        dnsdomain   => ['sue.ss',],
+        nameservers => ['ns0.sue.ss'],
+        interfaces  => ['eth0'],
+    }
+
+    dhcp::pool {'sue.ss':
+        network => '10.0.0.0',
+        mask    => '255.255.255.0',
+        range   => '10.0.0.100 10.0.0.200',
+        gateway => '10.0.0.1',
+    }
+
+    dhcp::host {
+        'cubox':    mac => "00:50:43:1c:12:3a", ip => "10.0.0.11";
+        'rpi1':     mac => "b8:27:eb:a2:06:59", ip => "10.0.0.12";
+        'retropie': mac => "b8:27:eb:d2:00:8a", ip => "10.0.0.21";
     }
 }
 
