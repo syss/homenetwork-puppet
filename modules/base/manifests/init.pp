@@ -1,5 +1,5 @@
 class base {
-	$packages = ['vim', 'nload', 'unp', 'hdparm', 'vim-puppet', 'git', 'nmap', 'rsync']
+	$packages = ['vim', 'nload', 'unp', 'hdparm', 'vim-puppet', 'git', 'nmap', 'rsync', 'lsof']
 
 	package {$packages:
 		ensure	=> present,
@@ -12,6 +12,6 @@ class base {
 
     file {'/etc/apt/apt.conf.d/01proxy':
         ensure  => file,
-        content => file("$module_name/01proxy"),
+#        content => file("$module_name/01proxy"),
     }
 }

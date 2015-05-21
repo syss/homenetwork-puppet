@@ -1,6 +1,8 @@
 Exec { path => [ "/bin/", "/sbin/" , "/usr/bin/", "/usr/sbin/" ] }
 hiera_include('classes')
 
+node default {}
+
 node cubox {
     include bind
     bind::zone {'sue.ss':
@@ -30,7 +32,7 @@ node cubox {
 #        rhs         => '10.0.0.$',
 #    }
 
-    bind::record {'CNAME ns0.sue.ss':
+    bind::record {'CNAME ns0':
         zone        => 'sue.ss',
         record_type => 'CNAME',
         hash_data   => {

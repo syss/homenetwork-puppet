@@ -40,13 +40,29 @@ class base::file_server {
     service { 'minidlna':
         ensure      => running,
         enable      => true,
-        subscribe   => File['/etc/minidlna.conf'],
+        subscribe   => [File['/etc/minidlna.conf'],File['/var/cache/minidlna'],Exec['increase max inotify']],
+        require     => Package['minidlna'],
+    }
+
+    exec { 'increase max inotify':
+        command => 'echo "fs.inotify.max_user_watches = 100000" >> /etc/sysctl.conf \
+        && sysctl -p /etc/sysctl.conf',
+        unless  => 'grep -- "fs.inotify.max_user_watches = 100000" /etc/sysctl.conf',
+    }
+
+    file { ['/var/cache/minidlna','/var/lib/minidlna']:
+        ensure      => directory,
+        owner       => 'minidlna',
+        group       => 'minidlna',
+        recurse     => true,
+        require     => Package['minidlna'],
     }
 
     file {['/data/dlna-index', '/data/dlna-index/Movies', '/data/dlna-index/Music']:
         ensure  => directory,
         owner   => 'data',
         group   => 'data',
+        require => Mount['DATA4'],
     }
 
     file {'/data/dlna-index/Music/Albums':
