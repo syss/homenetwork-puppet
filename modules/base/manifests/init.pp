@@ -1,5 +1,5 @@
 class base {
-	$packages = ['vim', 'nload', 'unp', 'hdparm', 'vim-puppet', 'git', 'nmap', 'rsync', 'lsof']
+	$packages = ['vim', 'nload', 'unp', 'hdparm', 'vim-puppet', 'git', 'nmap', 'rsync', 'lsof', 'dnsutils', 'screen']
 
 	package {$packages:
 		ensure	=> present,
