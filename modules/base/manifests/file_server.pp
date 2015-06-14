@@ -24,7 +24,7 @@ class base::file_server {
         atboot      => true,
         fstype      => 'ext4',
         device      => 'LABEL=DATA4',
-        options     => 'auto,rw,relatime',
+        options     => 'auto,rw,noatime',
         remounts    => true,
     }
 
