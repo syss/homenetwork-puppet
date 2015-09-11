@@ -1,3 +1,36 @@
+##2015-07-28 - Supported Release 2.1.1
+###Summary
+
+This release includes a few bugfixes.
+
+####Bugfixes
+- Fix incorrect use of anchoring (MODULES-2190)
+- Use correct comment type for apt.conf files
+- Test fixes
+- Documentation fixes
+
+##2015-06-16 - Supported Release 2.1.0
+###Summary
+
+This release largely makes `apt::key` and `apt::source` API-compatible with the 1.8.x versions for ease in upgrading, and also addresses some compatibility issues with older versions of Puppet.
+
+####Features
+- Add API compatibility to `apt::key` and `apt::source`
+- Added `apt_reboot_required` fact
+
+####Bugfixes
+- Fix compatibility with Puppet versions 3.0-3.4
+- Work around future parser bug PUP-4133
+
+##2015-04-28 - Supported Release 2.0.1
+###Summary
+
+This bug fixes a few compatibility issues that came up with the 2.0.0 release, and includes test and documentation updates.
+
+####Bugfixes
+- Fix incompatibility with keyrings containing multiple keys
+- Fix bugs preventing the module from working with Puppet < 3.5.0
+
 ##2015-04-07 - Supported Release 2.0.0
 ###Summary
 

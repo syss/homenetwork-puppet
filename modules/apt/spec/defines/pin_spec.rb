@@ -3,7 +3,7 @@ describe 'apt::pin', :type => :define do
   let :pre_condition do
     'class { "apt": }'
   end
-  let(:facts) { { :lsbdistid => 'Debian', :osfamily => 'Debian', :lsbdistcodename => 'wheezy' } }
+  let(:facts) { { :lsbdistid => 'Debian', :osfamily => 'Debian', :lsbdistcodename => 'wheezy', :puppetversion   => Puppet.version, } }
   let(:title) { 'my_pin' }
 
   context 'defaults' do
@@ -80,7 +80,7 @@ describe 'apt::pin', :type => :define do
       end
       it do
         expect {
-          is_expected.to compile
+          subject.call
         }.to raise_error(Puppet::Error, /Only integers are allowed/)
       end
     end
@@ -93,7 +93,7 @@ describe 'apt::pin', :type => :define do
       end
       it do
         expect {
-          is_expected.to compile
+          subject.call
         }.to raise_error(Puppet::Error, /parameter version cannot be used in general form/)
       end
     end
@@ -107,7 +107,7 @@ describe 'apt::pin', :type => :define do
       end
       it do
         expect {
-          is_expected.to compile
+          subject.call
         }.to raise_error(Puppet::Error, /parameters release and origin are mutually exclusive/)
       end
     end
@@ -122,7 +122,7 @@ describe 'apt::pin', :type => :define do
       end
       it do
         expect {
-          is_expected.to compile
+          subject.call
         }.to raise_error(Puppet::Error, /parameters release, origin, and version are mutually exclusive/)
       end
     end
@@ -137,7 +137,7 @@ describe 'apt::pin', :type => :define do
       end
       it do
         expect {
-          is_expected.to compile
+          subject.call
         }.to raise_error(Puppet::Error, /parameters release, origin, and version are mutually exclusive/)
       end
     end

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'apt::setting' do
   let(:pre_condition) { 'class { "apt": }' }
-  let(:facts) { { :lsbdistid => 'Debian', :osfamily => 'Debian', :lsbdistcodename => 'wheezy' } }
+  let(:facts) { { :lsbdistid => 'Debian', :osfamily => 'Debian', :lsbdistcodename => 'wheezy', :puppetversion   => Puppet.version, } }
   let(:title) { 'conf-teddybear' }
 
   let(:default_params) { { :content => 'di' } }
@@ -10,31 +10,31 @@ describe 'apt::setting' do
   describe 'when using the defaults' do
     context 'without source or content' do
       it do
-        expect { is_expected.to compile }.to raise_error(Puppet::Error, /needs either of /)
+        expect { subject.call }.to raise_error(Puppet::Error, /needs either of /)
       end
     end
 
     context 'with title=conf-teddybear ' do
       let(:params) { default_params }
-      it { is_expected.to contain_file('/etc/apt/apt.conf.d/50teddybear').that_notifies('Exec[apt_update]') }
+      it { is_expected.to contain_file('/etc/apt/apt.conf.d/50teddybear').that_notifies('Class[Apt::Update]') }
     end
 
     context 'with title=pref-teddybear' do
       let(:title) { 'pref-teddybear' }
       let(:params) { default_params }
-      it { is_expected.to contain_file('/etc/apt/preferences.d/50teddybear').that_notifies('Exec[apt_update]') }
+      it { is_expected.to contain_file('/etc/apt/preferences.d/50teddybear').that_notifies('Class[Apt::Update]') }
     end
 
     context 'with title=list-teddybear' do
       let(:title) { 'list-teddybear' }
       let(:params) { default_params }
-      it { is_expected.to contain_file('/etc/apt/sources.list.d/teddybear.list').that_notifies('Exec[apt_update]') }
+      it { is_expected.to contain_file('/etc/apt/sources.list.d/teddybear.list').that_notifies('Class[Apt::Update]') }
     end
 
     context 'with source' do
       let(:params) { { :source => 'puppet:///la/die/dah' } }
       it {
-        is_expected.to contain_file('/etc/apt/apt.conf.d/50teddybear').that_notifies('Exec[apt_update]').with({
+        is_expected.to contain_file('/etc/apt/apt.conf.d/50teddybear').that_notifies('Class[Apt::Update]').with({
         :ensure => 'file',
         :owner  => 'root',
         :group  => 'root',
@@ -45,7 +45,7 @@ describe 'apt::setting' do
 
     context 'with content' do
       let(:params) { default_params }
-      it { is_expected.to contain_file('/etc/apt/apt.conf.d/50teddybear').that_notifies('Exec[apt_update]').with({
+      it { is_expected.to contain_file('/etc/apt/apt.conf.d/50teddybear').that_notifies('Class[Apt::Update]').with({
         :ensure  => 'file',
         :owner   => 'root',
         :group   => 'root',
@@ -61,7 +61,7 @@ describe 'apt::setting' do
       apt::setting { "list-teddybear": content => "foo" }
       '
     end
-    let(:facts) { { :lsbdistid => 'Debian', :osfamily => 'Debian', :lsbdistcodename => 'wheezy' } }
+    let(:facts) { { :lsbdistid => 'Debian', :osfamily => 'Debian', :lsbdistcodename => 'wheezy', :puppetversion   => Puppet.version, } }
     let(:title) { 'conf-teddybear' }
     let(:default_params) { { :content => 'di' } }
 
@@ -74,7 +74,7 @@ describe 'apt::setting' do
     context 'with source and content' do
       let(:params) { default_params.merge({ :source => 'la' }) }
       it do
-        expect { is_expected.to compile }.to raise_error(Puppet::Error, /cannot have both /)
+        expect { subject.call }.to raise_error(Puppet::Error, /cannot have both /)
       end
     end
 
@@ -82,33 +82,33 @@ describe 'apt::setting' do
       let(:title) { 'ext-teddybear' }
       let(:params) { default_params }
       it do
-        expect { is_expected.to compile }.to raise_error(Puppet::Error, /must start with /)
+        expect { subject.call }.to raise_error(Puppet::Error, /must start with /)
       end
     end
 
     context 'with ensure=banana' do
       let(:params) { default_params.merge({ :ensure => 'banana' }) }
       it do
-        expect { is_expected.to compile }.to raise_error(Puppet::Error, /"banana" does not /)
+        expect { subject.call }.to raise_error(Puppet::Error, /"banana" does not /)
       end
     end
 
     context 'with priority=1.2' do
       let(:params) { default_params.merge({ :priority => 1.2 }) }
       it do
-        expect { is_expected.to compile }.to raise_error(Puppet::Error, /be an integer /)
+        expect { subject.call }.to raise_error(Puppet::Error, /be an integer /)
       end
     end
   end
 
   describe 'with priority=100' do
     let(:params) { default_params.merge({ :priority => 100 }) }
-    it { is_expected.to contain_file('/etc/apt/apt.conf.d/100teddybear').that_notifies('Exec[apt_update]') }
+    it { is_expected.to contain_file('/etc/apt/apt.conf.d/100teddybear').that_notifies('Class[Apt::Update]') }
   end
 
   describe 'with ensure=absent' do
     let(:params) { default_params.merge({ :ensure => 'absent' }) }
-    it { is_expected.to contain_file('/etc/apt/apt.conf.d/50teddybear').that_notifies('Exec[apt_update]').with({
+    it { is_expected.to contain_file('/etc/apt/apt.conf.d/50teddybear').that_notifies('Class[Apt::Update]').with({
       :ensure => 'absent',
     })}
   end

@@ -26,7 +26,7 @@ class apt(
   }
 
   $_update = merge($::apt::update_defaults, $update)
-  include apt::update
+  include ::apt::update
 
   validate_hash($purge)
   if $purge['sources.list'] {
@@ -67,18 +67,18 @@ class apt(
   if $proxy['host'] {
     apt::setting { 'conf-proxy':
       priority => '01',
-      content  => template('apt/_header.erb', 'apt/proxy.erb'),
+      content  => template('apt/_conf_header.erb', 'apt/proxy.erb'),
     }
   }
 
   $sources_list_content = $_purge['sources.list'] ? {
-    false => undef,
-    true  => "# Repos managed by puppet.\n",
+    true    => "# Repos managed by puppet.\n",
+    default => undef,
   }
 
   $preferences_ensure = $_purge['preferences'] ? {
-    false => file,
-    true  => absent,
+    true    => absent,
+    default => file,
   }
 
   if $_update['frequency'] == 'always' {
@@ -89,7 +89,7 @@ class apt(
 
   apt::setting { 'conf-update-stamp':
     priority => 15,
-    content  => template('apt/_header.erb', 'apt/15update-stamp.erb'),
+    content  => template('apt/_conf_header.erb', 'apt/15update-stamp.erb'),
   }
 
   file { 'sources.list':
@@ -99,7 +99,7 @@ class apt(
     group   => root,
     mode    => '0644',
     content => $sources_list_content,
-    notify  => Exec['apt_update'],
+    notify  => Class['apt::update'],
   }
 
   file { 'sources.list.d':
@@ -110,7 +110,7 @@ class apt(
     mode    => '0644',
     purge   => $_purge['sources.list.d'],
     recurse => $_purge['sources.list.d'],
-    notify  => Exec['apt_update'],
+    notify  => Class['apt::update'],
   }
 
   file { 'preferences':
@@ -119,7 +119,7 @@ class apt(
     owner  => root,
     group  => root,
     mode   => '0644',
-    notify => Exec['apt_update'],
+    notify => Class['apt::update'],
   }
 
   file { 'preferences.d':
@@ -130,10 +130,8 @@ class apt(
     mode    => '0644',
     purge   => $_purge['preferences.d'],
     recurse => $_purge['preferences.d'],
-    notify  => Exec['apt_update'],
+    notify  => Class['apt::update'],
   }
-
-  contain 'apt::update'
 
   # manage sources if present
   if $sources {

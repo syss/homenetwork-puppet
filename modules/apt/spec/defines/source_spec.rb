@@ -17,12 +17,13 @@ describe 'apt::source' do
         {
           :lsbdistid       => 'Debian',
           :lsbdistcodename => 'wheezy',
-          :osfamily        => 'Debian'
+          :osfamily        => 'Debian',
+          :puppetversion   => Puppet.version,
         }
       end
       it do
         expect {
-          is_expected.to compile
+          subject.call
         }.to raise_error(Puppet::Error, /source entry without specifying a location/)
       end
     end
@@ -31,7 +32,8 @@ describe 'apt::source' do
         {
           :lsbdistid       => 'Debian',
           :lsbdistcodename => 'wheezy',
-          :osfamily        => 'Debian'
+          :osfamily        => 'Debian',
+          :puppetversion   => Puppet.version,
         }
       end
       let(:params) { { :location => 'hello.there', } }
@@ -48,7 +50,8 @@ describe 'apt::source' do
       {
         :lsbdistid       => 'Debian',
         :lsbdistcodename => 'wheezy',
-        :osfamily        => 'Debian'
+        :osfamily        => 'Debian',
+        :puppetversion   => Puppet.version,
       }
     end
 
@@ -66,6 +69,8 @@ describe 'apt::source' do
         :ensure => 'present',
       }).with_content(/hello.there wheezy main\n/)
       }
+
+      it { is_expected.to contain_file('/etc/apt/sources.list.d/my_source.list').that_notifies('Class[Apt::Update]')}
 
       it { is_expected.to contain_apt__pin('my_source').that_comes_before('Apt::Setting[list-my_source]').with({
         :ensure       => 'present',
@@ -186,7 +191,8 @@ describe 'apt::source' do
       {
         :lsbdistid       => 'Debian',
         :lsbdistcodename => 'wheezy',
-        :osfamily        => 'Debian'
+        :osfamily        => 'Debian',
+        :puppetversion   => Puppet.version,
       }
     end
     let :params do
@@ -207,7 +213,8 @@ describe 'apt::source' do
       {
         :lsbdistid       => 'Debian',
         :lsbdistcodename => 'wheezy',
-        :osfamily        => 'Debian'
+        :osfamily        => 'Debian',
+        :puppetversion   => Puppet.version,
       }
     end
     let :params do
@@ -224,12 +231,107 @@ describe 'apt::source' do
     }
   end
 
+  context 'include_src => true' do
+    let :facts do
+      {
+        :lsbdistid       => 'Debian',
+        :lsbdistcodename => 'wheezy',
+        :osfamily        => 'Debian',
+        :puppetversion   => Puppet.version,
+      }
+    end
+    let :params do
+      {
+        :location    => 'hello.there',
+        :include_src => true,
+      }
+    end
+
+    it { is_expected.to contain_apt__setting('list-my_source').with({
+      :ensure => 'present',
+    }).with_content(/# my_source\ndeb hello.there wheezy main\ndeb-src hello.there wheezy main\n/)
+    }
+  end
+
+  context 'include_deb => false' do
+    let :facts do
+      {
+        :lsbdistid       => 'debian',
+        :lsbdistcodename => 'wheezy',
+        :osfamily        => 'debian',
+        :puppetversion   => Puppet.version,
+      }
+    end
+    let :params do
+      {
+        :location    => 'hello.there',
+        :include_deb => false,
+      }
+    end
+
+    it { is_expected.to contain_apt__setting('list-my_source').with({
+      :ensure => 'present',
+    }).without_content(/deb-src hello.there wheezy main\n/)
+    }
+    it { is_expected.to contain_apt__setting('list-my_source').without_content(/deb hello.there wheezy main\n/) }
+  end
+
+  context 'include_src => true and include_deb => false' do
+    let :facts do
+      {
+        :lsbdistid       => 'debian',
+        :lsbdistcodename => 'wheezy',
+        :osfamily        => 'debian',
+        :puppetversion   => Puppet.version,
+      }
+    end
+    let :params do
+      {
+        :location    => 'hello.there',
+        :include_deb => false,
+        :include_src => true,
+      }
+    end
+
+    it { is_expected.to contain_apt__setting('list-my_source').with({
+      :ensure => 'present',
+    }).with_content(/deb-src hello.there wheezy main\n/)
+    }
+    it { is_expected.to contain_apt__setting('list-my_source').without_content(/deb hello.there wheezy main\n/) }
+  end
+
+  context 'include precedence' do
+    let :facts do
+      {
+        :lsbdistid       => 'debian',
+        :lsbdistcodename => 'wheezy',
+        :osfamily        => 'debian',
+        :puppetversion   => Puppet.version,
+      }
+    end
+    let :params do
+      {
+        :location    => 'hello.there',
+        :include_deb => true,
+        :include_src => false,
+        :include     => { 'deb' => false, 'src' => true },
+      }
+    end
+
+    it { is_expected.to contain_apt__setting('list-my_source').with({
+      :ensure => 'present',
+    }).with_content(/deb-src hello.there wheezy main\n/)
+    }
+    it { is_expected.to contain_apt__setting('list-my_source').without_content(/deb hello.there wheezy main\n/) }
+  end
+
   context 'ensure => absent' do
     let :facts do
       {
         :lsbdistid       => 'Debian',
         :lsbdistcodename => 'wheezy',
-        :osfamily        => 'Debian'
+        :osfamily        => 'Debian',
+        :puppetversion   => Puppet.version,
       }
     end
     let :params do
@@ -249,14 +351,15 @@ describe 'apt::source' do
       let :facts do
         {
           :lsbdistid       => 'Debian',
-          :osfamily        => 'Debian'
+          :osfamily        => 'Debian',
+          :puppetversion   => Puppet.version,
         }
       end
       let(:params) { { :location => 'hello.there', } }
 
       it do
         expect {
-          is_expected.to compile
+          subject.call
         }.to raise_error(Puppet::Error, /lsbdistcodename fact not available: release parameter required/)
       end
     end
@@ -266,7 +369,8 @@ describe 'apt::source' do
         {
           :lsbdistid       => 'Debian',
           :lsbdistcodename => 'wheezy',
-          :osfamily        => 'Debian'
+          :osfamily        => 'Debian',
+          :puppetversion   => Puppet.version,
         }
       end
       let :params do
@@ -278,7 +382,7 @@ describe 'apt::source' do
 
       it do
         expect {
-          is_expected.to compile
+          subject.call
         }.to raise_error(Puppet::Error, /invalid value for pin/)
       end
     end

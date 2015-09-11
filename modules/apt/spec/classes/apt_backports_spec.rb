@@ -10,6 +10,7 @@ describe 'apt::backports', :type => :class do
           :lsbdistid       => 'Debian',
           :osfamily        => 'Debian',
           :lsbdistcodename => 'wheezy',
+          :puppetversion   => Puppet.version,
         }
       end
       it { is_expected.to contain_apt__source('backports').with({
@@ -27,6 +28,7 @@ describe 'apt::backports', :type => :class do
           :lsbdistid       => 'Debian',
           :osfamily        => 'Debian',
           :lsbdistcodename => 'squeeze',
+          :puppetversion   => Puppet.version,
         }
       end
       it { is_expected.to contain_apt__source('backports').with({
@@ -44,6 +46,7 @@ describe 'apt::backports', :type => :class do
           :lsbdistid       => 'Ubuntu',
           :osfamily        => 'Debian',
           :lsbdistcodename => 'trusty',
+          :puppetversion   => Puppet.version,
         }
       end
       it { is_expected.to contain_apt__source('backports').with({
@@ -61,6 +64,7 @@ describe 'apt::backports', :type => :class do
           :lsbdistid       => 'Ubuntu',
           :osfamily        => 'Debian',
           :lsbdistcodename => 'trusty',
+          :puppetversion   => Puppet.version,
         }
       end
       let(:params) do
@@ -87,6 +91,7 @@ describe 'apt::backports', :type => :class do
           :lsbdistid       => 'Ubuntu',
           :osfamily        => 'Debian',
           :lsbdistcodename => 'trusty',
+          :puppetversion   => Puppet.version,
         }
       end
       let(:params) do
@@ -112,6 +117,7 @@ describe 'apt::backports', :type => :class do
         :lsbdistid       => 'linuxmint',
         :osfamily        => 'Debian',
         :lsbdistcodename => 'qiana',
+        :puppetversion   => Puppet.version,
       }
     end
     context 'sets all the needed things' do
@@ -142,7 +148,7 @@ describe 'apt::backports', :type => :class do
       end
       it do
         expect {
-          is_expected.to compile
+          subject.call
         }.to raise_error(Puppet::Error, /If not on Debian or Ubuntu, you must explicitly pass location, release, repos, and key/)
       end
     end
@@ -156,7 +162,7 @@ describe 'apt::backports', :type => :class do
       end
       it do
         expect {
-          is_expected.to compile
+          subject.call
         }.to raise_error(Puppet::Error, /If not on Debian or Ubuntu, you must explicitly pass location, release, repos, and key/)
       end
     end
@@ -170,7 +176,7 @@ describe 'apt::backports', :type => :class do
       end
       it do
         expect {
-          is_expected.to compile
+          subject.call
         }.to raise_error(Puppet::Error, /If not on Debian or Ubuntu, you must explicitly pass location, release, repos, and key/)
       end
     end
@@ -184,7 +190,7 @@ describe 'apt::backports', :type => :class do
       end
       it do
         expect {
-          is_expected.to compile
+          subject.call
         }.to raise_error(Puppet::Error, /If not on Debian or Ubuntu, you must explicitly pass location, release, repos, and key/)
       end
     end
@@ -195,6 +201,7 @@ describe 'apt::backports', :type => :class do
         :lsbdistid       => 'Ubuntu',
         :osfamily        => 'Debian',
         :lsbdistcodename => 'trusty',
+        :puppetversion   => Puppet.version,
       }
     end
     context 'invalid location' do
@@ -205,7 +212,7 @@ describe 'apt::backports', :type => :class do
       end
       it do
         expect {
-          is_expected.to compile
+          subject.call
         }.to raise_error(Puppet::Error, /is not a string/)
       end
     end
@@ -217,7 +224,7 @@ describe 'apt::backports', :type => :class do
       end
       it do
         expect {
-          is_expected.to compile
+          subject.call
         }.to raise_error(Puppet::Error, /is not a string/)
       end
     end
@@ -229,7 +236,7 @@ describe 'apt::backports', :type => :class do
       end
       it do
         expect {
-          is_expected.to compile
+          subject.call
         }.to raise_error(Puppet::Error, /is not a string/)
       end
     end
@@ -241,7 +248,7 @@ describe 'apt::backports', :type => :class do
       end
       it do
         expect {
-          is_expected.to compile
+          subject.call
         }.to raise_error(Puppet::Error, /is not a string/)
       end
     end
@@ -253,7 +260,7 @@ describe 'apt::backports', :type => :class do
       end
       it do
         expect {
-          is_expected.to compile
+          subject.call
         }.to raise_error(Puppet::Error, /pin must be either a string, number or hash/)
       end
     end

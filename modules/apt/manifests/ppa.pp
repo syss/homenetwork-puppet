@@ -31,9 +31,9 @@ define apt::ppa(
     $_proxy = $::apt::_proxy
     if $_proxy['host'] {
       if $_proxy['https'] {
-        $_proxy_env = ["http_proxy=http://${_proxy['host']}:${_proxy['port']}", "https_proxy=https://${_proxy['host']}:${_proxy['port']}"]
+        $_proxy_env = ["http_proxy=http://${$_proxy['host']}:${$_proxy['port']}", "https_proxy=https://${$_proxy['host']}:${$_proxy['port']}"]
       } else {
-        $_proxy_env = ["http_proxy=http://${_proxy['host']}:${_proxy['port']}"]
+        $_proxy_env = ["http_proxy=http://${$_proxy['host']}:${$_proxy['port']}"]
       }
     } else {
       $_proxy_env = []
@@ -45,7 +45,7 @@ define apt::ppa(
       unless      => "/usr/bin/test -s ${::apt::sources_list_d}/${sources_list_d_filename}",
       user        => 'root',
       logoutput   => 'on_failure',
-      notify      => Exec['apt_update'],
+      notify      => Class['apt::update'],
       require     => $_require,
     }
 
@@ -57,7 +57,7 @@ define apt::ppa(
   else {
     file { "${::apt::sources_list_d}/${sources_list_d_filename}":
       ensure => 'absent',
-      notify => Exec['apt_update'],
+      notify => Class['apt::update'],
     }
   }
 }

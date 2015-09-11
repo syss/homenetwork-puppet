@@ -1,5 +1,5 @@
 ---
 classes:
   - base::file_server
-    #      - base::dhcp
-    #- base::dns
+  - base::dhcp
+  - base::dns

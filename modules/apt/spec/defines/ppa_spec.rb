@@ -12,12 +12,13 @@ describe 'apt::ppa' do
         :operatingsystem => 'Ubuntu',
         :osfamily        => 'Debian',
         :lsbdistid       => 'Ubuntu',
+        :puppetversion   => Puppet.version,
       }
     end
 
     let(:title) { 'ppa:needs/such.substitution/wow' }
     it { is_expected.to_not contain_package('python-software-properties') }
-    it { is_expected.to contain_exec('add-apt-repository-ppa:needs/such.substitution/wow').that_notifies('Exec[apt_update]').with({
+    it { is_expected.to contain_exec('add-apt-repository-ppa:needs/such.substitution/wow').that_notifies('Class[Apt::Update]').with({
       :environment => [],
       :command     => '/usr/bin/add-apt-repository -y ppa:needs/such.substitution/wow',
       :unless      => '/usr/bin/test -s /etc/apt/sources.list.d/needs-such_substitution-wow-natty.list',
@@ -50,12 +51,13 @@ describe 'apt::ppa' do
         :operatingsystem => 'Ubuntu',
         :osfamily        => 'Debian',
         :lsbdistid       => 'Ubuntu',
+        :puppetversion   => Puppet.version,
       }
     end
 
     let(:title) { 'ppa:needs/such.substitution/wow' }
     it { is_expected.to contain_package('software-properties-common') }
-    it { is_expected.to contain_exec('add-apt-repository-ppa:needs/such.substitution/wow').that_notifies('Exec[apt_update]').with({
+    it { is_expected.to contain_exec('add-apt-repository-ppa:needs/such.substitution/wow').that_notifies('Class[Apt::Update]').with({
       'environment' => [],
       'command'     => '/usr/bin/add-apt-repository -y ppa:needs/such.substitution/wow',
       'unless'      => '/usr/bin/test -s /etc/apt/sources.list.d/needs-such_substitution-wow-natty.list',
@@ -81,6 +83,7 @@ describe 'apt::ppa' do
         :operatingsystem => 'Ubuntu',
         :osfamily        => 'Debian',
         :lsbdistid       => 'Ubuntu',
+        :puppetversion   => Puppet.version,
       }
     end
     let :params do
@@ -91,7 +94,7 @@ describe 'apt::ppa' do
 
     let(:title) { 'ppa:needs/such.substitution/wow' }
     it { is_expected.to_not contain_package('python-software-properties') }
-    it { is_expected.to contain_exec('add-apt-repository-ppa:needs/such.substitution/wow').that_notifies('Exec[apt_update]').with({
+    it { is_expected.to contain_exec('add-apt-repository-ppa:needs/such.substitution/wow').that_notifies('Class[Apt::Update]').with({
       'environment' => [],
       'command'     => '/usr/bin/add-apt-repository -y ppa:needs/such.substitution/wow',
       'unless'      => '/usr/bin/test -s /etc/apt/sources.list.d/needs-such_substitution-wow-natty.list',
@@ -119,6 +122,7 @@ describe 'apt::ppa' do
         :operatingsystem => 'Ubuntu',
         :lsbdistid       => 'Ubuntu',
         :osfamily        => 'Debian',
+        :puppetversion   => Puppet.version,
       }
     end
     let :params do
@@ -131,7 +135,7 @@ describe 'apt::ppa' do
     let(:title) { 'ppa:foo' }
     it { is_expected.to compile.with_all_deps }
     it { is_expected.to contain_package('software-properties-common') }
-    it { is_expected.to contain_exec('add-apt-repository-ppa:foo').that_notifies('Exec[apt_update]').with({
+    it { is_expected.to contain_exec('add-apt-repository-ppa:foo').that_notifies('Class[Apt::Update]').with({
       :environment => [],
       :command     => '/usr/bin/add-apt-repository  ppa:foo',
       :unless      => '/usr/bin/test -s /etc/apt/sources.list.d/foo-trusty.list',
@@ -154,6 +158,7 @@ describe 'apt::ppa' do
         :operatingsystem => 'Ubuntu',
         :lsbdistid       => 'Ubuntu',
         :osfamily        => 'Debian',
+        :puppetversion   => Puppet.version,
       }
     end
     let :params do
@@ -164,7 +169,7 @@ describe 'apt::ppa' do
     end
     let(:title) { 'ppa:foo' }
     it { is_expected.to contain_package('software-properties-common') }
-    it { is_expected.to contain_exec('add-apt-repository-ppa:foo').that_notifies('Exec[apt_update]').with({
+    it { is_expected.to contain_exec('add-apt-repository-ppa:foo').that_notifies('Class[Apt::Update]').with({
       :environment => ['http_proxy=http://localhost:8080'],
       :command     => '/usr/bin/add-apt-repository  ppa:foo',
       :unless      => '/usr/bin/test -s /etc/apt/sources.list.d/foo-trusty.list',
@@ -187,6 +192,7 @@ describe 'apt::ppa' do
         :operatingsystem => 'Ubuntu',
         :lsbdistid       => 'Ubuntu',
         :osfamily        => 'Debian',
+        :puppetversion   => Puppet.version,
       }
     end
     let :params do
@@ -197,7 +203,7 @@ describe 'apt::ppa' do
     end
     let(:title) { 'ppa:foo' }
     it { is_expected.to contain_package('software-properties-common') }
-    it { is_expected.to contain_exec('add-apt-repository-ppa:foo').that_notifies('Exec[apt_update]').with({
+    it { is_expected.to contain_exec('add-apt-repository-ppa:foo').that_notifies('Class[Apt::Update]').with({
       :environment => ['http_proxy=http://localhost:8180'],
       :command     => '/usr/bin/add-apt-repository  ppa:foo',
       :unless      => '/usr/bin/test -s /etc/apt/sources.list.d/foo-trusty.list',
@@ -220,6 +226,7 @@ describe 'apt::ppa' do
         :operatingsystem => 'Ubuntu',
         :lsbdistid       => 'Ubuntu',
         :osfamily        => 'Debian',
+        :puppetversion   => Puppet.version,
       }
     end
     let :params do
@@ -230,7 +237,7 @@ describe 'apt::ppa' do
     end
     let(:title) { 'ppa:foo' }
     it { is_expected.to contain_package('software-properties-common') }
-    it { is_expected.to contain_exec('add-apt-repository-ppa:foo').that_notifies('Exec[apt_update]').with({
+    it { is_expected.to contain_exec('add-apt-repository-ppa:foo').that_notifies('Class[Apt::Update]').with({
       :environment => ['http_proxy=http://localhost:8180', 'https_proxy=https://localhost:8180'],
       :command     => '/usr/bin/add-apt-repository  ppa:foo',
       :unless      => '/usr/bin/test -s /etc/apt/sources.list.d/foo-trusty.list',
@@ -251,6 +258,7 @@ describe 'apt::ppa' do
         :operatingsystem => 'Ubuntu',
         :lsbdistid       => 'Ubuntu',
         :osfamily        => 'Debian',
+        :puppetversion   => Puppet.version,
       }
     end
     let(:title) { 'ppa:foo' }
@@ -259,7 +267,7 @@ describe 'apt::ppa' do
         :ensure => 'absent'
       }
     end
-    it { is_expected.to contain_file('/etc/apt/sources.list.d/foo-trusty.list').that_notifies('Exec[apt_update]').with({
+    it { is_expected.to contain_file('/etc/apt/sources.list.d/foo-trusty.list').that_notifies('Class[Apt::Update]').with({
       :ensure => 'absent',
     })
     }
@@ -274,12 +282,13 @@ describe 'apt::ppa' do
           :lsbdistid       => 'Ubuntu',
           :osfamily        => 'Debian',
           :lsbdistcodeanme => nil,
+          :puppetversion   => Puppet.version,
         }
       end
       let(:title) { 'ppa:foo' }
       it do
         expect {
-          is_expected.to compile
+          subject.call
         }.to raise_error(Puppet::Error, /lsbdistcodename fact not available: release parameter required/)
       end
     end
@@ -292,12 +301,13 @@ describe 'apt::ppa' do
           :operatingsystem => 'Debian',
           :lsbdistid       => 'debian',
           :osfamily        => 'Debian',
+          :puppetversion   => Puppet.version,
         }
       end
       let(:title) { 'ppa:foo' }
       it do
         expect {
-          is_expected.to compile
+          subject.call
         }.to raise_error(Puppet::Error, /not currently supported on Debian/)
       end
     end

@@ -3,7 +3,7 @@ describe 'apt::conf', :type => :define do
   let :pre_condition do
     'class { "apt": }'
   end
-  let(:facts) { { :lsbdistid => 'Debian', :osfamily => 'Debian', :lsbdistcodename => 'wheezy' } }
+  let(:facts) { { :lsbdistid => 'Debian', :osfamily => 'Debian', :lsbdistcodename => 'wheezy', :puppetversion   => Puppet.version, } }
   let :title do
     'norecommends'
   end
@@ -38,7 +38,7 @@ describe 'apt::conf', :type => :define do
     end
 
     it 'fails' do
-      expect { subject } .to raise_error(/pass in content/)
+      expect { subject.call } .to raise_error(/pass in content/)
     end
   end
 

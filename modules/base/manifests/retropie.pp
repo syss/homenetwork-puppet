@@ -3,11 +3,12 @@ class base::retropie {
     $xboxinit = '/etc/init.d/xboxdrv'
     $xboxetc = '/etc/default/xboxdrv'
 
-    file {"/home/pi/RetroPie/roms":
-        source  => "/data/data/Games/_Roms",
-        recurse => true,
-        replace => "no",
+    #this only gives info with -d debug option
+    rsync::get { '/home/pi/RetroPie/roms':
+        source  => 'data@puppet:/data/data/Games/_Roms',
+        purge   => false,
     }
+
 
     #https://github.com/petrockblog/RetroPie-Setup/wiki/Setting-up-the-XBox360-controller
     #XBOX360 Wireless boost

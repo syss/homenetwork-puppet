@@ -1,29 +1,30 @@
 class base::dns {
-    include bind
-    bind::zone {'sue.ss':
-        zone_contact    => 'stefan.sue.ss',
-        zone_ns         => ['ns0.sue.ss'],
-        zone_serial     => '2015050701',
-        zone_ttl        => '604800',
-        zone_origin     => 'sue.ss',
+
+    class { '::dns':
+        forwarders  => ['8.8.8.8','8.8.4.4'],
     }
 
-    bind::a { 'Hosts in sue.ss':
-        ensure      => 'present',
-        zone        => 'sue.ss',
-        ptr         => false,
-        hash_data   => {
-            'cubox'     => {owner   => '10.0.0.11',},
-            'rpi1'      => {owner   => '10.0.0.12',},
-            'retropie'  => {owner   => '10.0.0.21',},
-        },
+    dns::zone { 'sue.ss':
+        static_records  => true,
     }
-
-    bind::record {'CNAME sue.ss':
-        zone        => 'sue.ss',
-        record_type => 'CNAME',
-        hash_data   => {
-            'ns0'       => { owner  => 'cubox.sue.ss', },
-        }
+    dns::record {'a1.sue.ss':
+        target  => '10.0.0.1',
+        type    => 'A',
+    }
+    dns::record {'cubox.sue.ss':
+        target  => '10.0.0.11',
+        type    => 'A',
+    }
+    dns::record {'rpi1.sue.ss':
+        target  => '10.0.0.12',
+        type    =>  'A',
+    }
+    dns::record {'retropie.sue.ss':
+        target  => '10.0.0.21',
+        type    =>  'A',
+    }
+    dns::record {'ns0.sue.ss':
+        target  => 'cubox.sue.ss',
+        type    =>  'CNAME',
     }
 }

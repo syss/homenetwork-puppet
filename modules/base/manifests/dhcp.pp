@@ -8,7 +8,7 @@ class base::dhcp {
     dhcp::pool {'sue.ss':
         network => '10.0.0.0',
         mask    => '255.255.255.0',
-        range   => '10.0.0.150 10.0.0.200',
+        range   => '10.0.0.200 10.0.0.254',
         gateway => '10.0.0.1',
     }
 

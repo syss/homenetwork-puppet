@@ -99,18 +99,23 @@ define concat(
   $default_warn_message = '# This file is managed by Puppet. DO NOT EDIT.'
   $bool_warn_message    = 'Using stringified boolean values (\'true\', \'yes\', \'on\', \'false\', \'no\', \'off\') to represent boolean true/false as the $warn parameter to concat is deprecated and will be treated as the warning message in a future release'
 
+  # lint:ignore:quoted_booleans
   case $warn {
     true: {
       $warn_message = $default_warn_message
     }
+    # lint:ignore:quoted_booleans
     'true', 'yes', 'on': {
+    # lint:endignore
       warning($bool_warn_message)
       $warn_message = $default_warn_message
     }
     false: {
       $warn_message = ''
     }
+    # lint:ignore:quoted_booleans
     'false', 'no', 'off': {
+    # lint:endignore
       warning($bool_warn_message)
       $warn_message = ''
     }
@@ -118,6 +123,7 @@ define concat(
       $warn_message = $warn
     }
   }
+  # lint:endignore
 
   $warnmsg_escaped = regsubst($warn_message, '\'', '\'\\\'\'', 'G')
   $warnflag = $warnmsg_escaped ? {
@@ -177,15 +183,15 @@ define concat(
     }
 
     file { $name:
-      ensure       => present,
-      owner        => $owner,
-      group        => $group,
-      mode         => $mode,
-      replace      => $replace,
-      path         => $path,
-      alias        => "concat_${name}",
-      source       => "${fragdir}/${concat_name}",
-      backup       => $backup,
+      ensure  => present,
+      owner   => $owner,
+      group   => $group,
+      mode    => $mode,
+      replace => $replace,
+      path    => $path,
+      alias   => "concat_${name}",
+      source  => "${fragdir}/${concat_name}",
+      backup  => $backup,
     }
 
     # Only newer versions of puppet 3.x support the validate_cmd parameter
@@ -199,14 +205,16 @@ define concat(
     $command = strip(regsubst("${script_command} -o \"${fragdir}/${concat_name}\" -d \"${fragdir}\" ${warnflag} ${forceflag} ${orderflag} ${newlineflag}", '\s+', ' ', 'G'))
 
     # make sure ruby is in the path for PE
-    if defined('$is_pe') and $::is_pe {
+    if defined('$is_pe') and str2bool("${::is_pe}") { # lint:ignore:only_variable_string
       if $::kernel == 'windows' {
         $command_path = "${::env_windows_installdir}/bin:${::path}"
       } else {
-        $command_path = "/opt/puppet/bin:${::path}"
+        $command_path = "/opt/puppetlabs/puppet/bin:/opt/puppet/bin:${::path}"
       }
-    } else {
+    } elsif $::kernel == 'windows' {
       $command_path = $::path
+    } else {
+      $command_path = "/opt/puppetlabs/puppet/bin:${::path}"
     }
 
     # if puppet is running as root, this exec should also run as root to allow
@@ -241,10 +249,14 @@ define concat(
       backup => $backup,
     }
 
+    # lint:ignore:quoted_booleans
     $absent_exec_command = $::kernel ? {
       'windows' => 'cmd.exe /c exit 0',
+    # lint:ignore:quoted_booleans
       default   => 'true',
+    # lint:endignore
     }
+    # lint:endignore
 
     $absent_exec_path = $::kernel ? {
       'windows' => $::path,
