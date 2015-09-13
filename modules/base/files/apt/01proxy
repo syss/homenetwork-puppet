@@ -1,0 +1,13 @@
+# Override the default proxy, DIRECT causes a direct connection to be used
+Acquire::http::Proxy {
+    deb.opera.com DIRECT;
+    dl.google.com DIRECT;
+};
+# Fail immediately if a file could not be retrieved. Comment if you have a bad
+# Internet connection
+Acquire::Retries 0;
+
+# undocumented feature which was found in the source. It should be an absolute
+# path to the program, no arguments are allowed. stdout contains the proxy
+# server, stderr is shown (in stderr) but ignored by APT
+Acquire::http::ProxyAutoDetect "/etc/apt/detect-http-proxy";

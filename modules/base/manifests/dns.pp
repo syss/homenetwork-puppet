@@ -23,8 +23,17 @@ class base::dns {
         target  => '10.0.0.21',
         type    =>  'A',
     }
+    dns::record {'printer.sue.ss':
+        target  => '10.0.0.31',
+        type    =>  'A',
+    }
     dns::record {'ns0.sue.ss':
         target  => 'cubox.sue.ss',
         type    =>  'CNAME',
     }
+    dns::record {'gw.sue.ss':
+        target  => 'a1.sue.ss',
+        type    =>  'CNAME',
+    }
+
 }

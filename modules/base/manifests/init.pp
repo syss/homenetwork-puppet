@@ -10,9 +10,15 @@ class base {
 		content => file("$module_name/.vimrc"),
 	}
 
+    file {'/etc/apt/detect-http-proxy':
+        ensure  => file,
+        mode    => 755,
+        content => file("$module_name/apt/detectproxy"),
+    }
+
     file {'/etc/apt/apt.conf.d/01proxy':
         ensure  => file,
-        content => file("$module_name/01proxy"),
+        content => file("$module_name/apt/01proxy"),
     }
 
     file {'/root/.ssh/':
