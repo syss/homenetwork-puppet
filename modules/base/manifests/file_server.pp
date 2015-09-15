@@ -17,6 +17,18 @@ class base::file_server {
         subscribe => File['/etc/hdparm.conf'],
     }
 
+    #/dev/mmcblk0p1 on / type ext4 (rw,relatime,data=ordered)
+
+    mount { 'ROOT':
+        name        => '/',
+        ensure      => mounted,
+        atboot      => true,
+        fstype      => 'ext4',
+        device      => '/dev/mmcblk0p1',
+        options     => 'rw,relatime,data=ordered',
+        remounts    => true,
+    }
+
     #LABEL=DATA4     /data       ext4    auto,rw,relatime    0   0
     mount { 'DATA4':
         name        => '/data',
