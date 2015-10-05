@@ -1,0 +1,6 @@
+[submodule "modules/rtorrent"]
+	path = modules/rtorrent
+	url = https://github.com/kylejohnson/puppet-rtorrent
+[submodule "modules/dns"]
+	path = modules/dns
+	url = https://github.com/bennycornelissen/puppet-dns
