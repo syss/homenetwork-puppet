@@ -1,5 +1,9 @@
 class base::dns {
 
+    package {'dnsutils':
+        ensure  => present,
+    }
+
     class { '::dns':
         forwarders  => ['8.8.8.8','8.8.4.4'],
     }

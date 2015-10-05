@@ -29,6 +29,10 @@ class base::file_server {
         remounts    => true,
     }
 
+    file { '/data':
+        ensure  => directory,
+    } ->
+
     #LABEL=DATA4     /data       ext4    auto,rw,relatime    0   0
     mount { 'DATA4':
         name        => '/data',
