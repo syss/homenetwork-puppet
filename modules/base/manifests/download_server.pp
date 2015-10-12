@@ -19,4 +19,26 @@ class base::download_server {
         options     => 'defaults,nofail',
         remounts    => true,
     }
+
+    vcsrepo {'/opt/pyload':
+        ensure      => present,
+        provider    => git,
+        source      => 'https://github.com/pyload/pyload',
+        revision   => 'stable',
+        force       => true,
+    }
+
+    file {'/etc/init.d/pyload':
+        ensure      => file,
+        content     => file("$module_name/pyload/pyload.init"),
+    }
+
+    file {['/opt/pyload/module','/opt/pyload/module/config']:
+        ensure  => directory,
+    }
+
+    file {'/opt/pyload/module/config/configdir':
+        ensure  => file,
+        content => '/mnt/fts300gb/var/pyload',
+    }
 }

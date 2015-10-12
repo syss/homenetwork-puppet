@@ -44,6 +44,16 @@ class base::file_server {
         remounts    => true,
     }
 
+    #root@rpi1:/mnt/fts300gb /mnt/fts300gb   fuse.sshfs _netdev,user,idmap=user,transform_symlinks,identityfile=/root/.ssh/id_rsa,allow_other,    default_permissions,uid=1000,gid=1000 0 0
+    mount { 'RPI1':
+        name        => '/mnt/fts300gb',
+        ensure      => mounted,
+        atboot      => true,
+        fstype      => 'fuse.sshfs',
+        device      => 'root@rpi1:/mnt/fts300gb',
+        options     => 'nofail,_netdev,user,idmap=user,transform_symlinks,identityfile=/root/.ssh/id_rsa,allow_other,default_permissions,uid=1000,gid=1000',
+        remounts    => true,
+    }
     package {'minidlna':
         ensure  => present,
     }

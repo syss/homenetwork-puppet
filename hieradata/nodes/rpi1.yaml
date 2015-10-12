@@ -1,6 +1,8 @@
 ---
 classes:
   - base::download_server
+  - base::access_point
   - aptcacherng
+  - rtorrent
 
 aptcacherng::cachedir:  "/mnt/fts300gb/var/cache/apt-cacher-ng"

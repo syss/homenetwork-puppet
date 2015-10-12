@@ -1,0 +1,26 @@
+{
+  "name": "mcanevet-hostapd",
+  "version": "0.1.0",
+  "source": "https://github.com/mcanevet/puppet-hostapd",
+  "author": "Mickaël Canévet",
+  "license": "Apache 2.0",
+  "summary": "Puppet hostapd module",
+  "description": "Puppet module for hostapd",
+  "project_page": "https://github.com/mcanevet/puppet-hostapd",
+  "dependencies": [
+
+  ],
+  "types": [
+
+  ],
+  "checksums": {
+    "LICENSE": "0e5ccf641e613489e66aa98271dbe798",
+    "Modulefile": "a8911f61228887cb397df6948dd70ef2",
+    "README.md": "d41d8cd98f00b204e9800998ecf8427e",
+    "manifests/config.pp": "3a51ceacfc4ecc46f09996428c21779c",
+    "manifests/init.pp": "b77d9879cf7e8d32012ee320888d8b1b",
+    "manifests/install.pp": "85adeeacbc82621d66ae586f28813bdd",
+    "manifests/service.pp": "7936cda031afdc24736a26ef5c58214f",
+    "templates/hostapd.conf.erb": "e816fb3092c58aa5d1728b985f62c66a"
+  }
+}

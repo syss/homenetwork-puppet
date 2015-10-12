@@ -1,9 +1,7 @@
 class base {
-	$packages = ['htop', 'vim', 'nload', 'unp', 'hdparm', 'vim-puppet', 'git', 'nmap', 'rsync', 'lsof', 'screen']
+	$packages = ['htop', 'vim', 'nload', 'unp', 'hdparm', 'vim-puppet', 'git', 'nmap', 'rsync', 'lsof', 'screen', 'fail2ban']
 
-	package {$packages:
-		ensure	=> present,
-	}
+	ensure_packages ($packages)
 	
 	file {'/root/.vimrc':
 		ensure	=> file,
@@ -21,7 +19,7 @@ class base {
         content => file("$module_name/apt/01proxy"),
     }
 
-    file {'/root/.ssh/':
+    file {['/root/.ssh/','/opt']:
         ensure  => directory,
     }
 
@@ -34,9 +32,14 @@ class base {
     ssh_authorized_key { 'root@cubox':
         user    => 'root',
         type    => 'ssh-rsa',
-        key     => 'AAAAB3NzaC1yc2EAAAADAQABAAACAQC8g5fJvVi+2yNja4tSsO1I7CGlJ+PABnDWSu/bUswuGsZKvB1gRXBRhOj2I0Dz1ArBkYwXAu0s9+9kB9MvbupvI+gljZDbuWHCTQI/SUzb+Kyd76iaCoSb63YyyY3r80TxubcCvOVIH5YuTSZdsCMnTxmLkRjE8WTALvuiF5CZi67c5/T2N/14md+GgIT4ZcidX71CcYHFcQduXnj3IK7SBfaIJrc1LABk5kP68mM96/PjVgOspHNnOW0LZn7yk180tkGLbqGjLVlum3qfk1MS1xMuq4DFsG2kCDpOGxRAptx7o1bZ/owm+/mH8zMvu4J9pDAbOWXkS9p8UCkp7lLYLqayCwUEnPqRzfOSAF4TZSAcnE4DNozH3leyPmkifLRK5xzqx8ZKkrcr4WiNQNF4T06BGfA1eHbrZ/aKX5OhtUynjfTJ0bKHXaQ12zcmAm5vmsiqkEHD2FPbSzYkoqUp4TxW4rnQWy6WPU2iy8+QxUofjamRLT2NV/qfXFiuaP0Bv6nutU7Gfz8iwhz16aasFmof1upfvrV8D3ewBiFV7Cuol8LjVG5FabjYC9/fyXJjJP9VaCIvgsXcvdWPyvcpGzhaCpoXWIIAOwukRK0hd3lt+VUHLY3Qh/by2E6aXD+FJW3Ye3jDUiJWooU3MLsp62gVixR9sEs84SNSR1Iliw==',
+        key     => 'AAAAB3NzaC1yc2EAAAADAQABAAACAQC4PPM13TMJ154Tl3Uy52r+/3+lnNkOMlS6RMfb4MQVvfcCj7k7fa4HMsgMM5/18PyGigWrgtO+hK63xlDdO5dy+jcwfACo4kjSAtgR/4OiMeBkI3gKSvGUVhJgh8sO+It9o/0eOkqWXhoB4N8lqGkI8NIuJo3YLiVML4verVUiA4Rb2FJhPFycRGDWMA1BI3bY3QUSlONFoHdiKKvS9oAfQl6Ij86TWaboZA5LKhHinHOV3J55rQkHu1eg7d4De/63XpT76WiexG0mqzuIl641AOU/QJKjv+zOw0xAUqv0FbhygAdAf3868D3YXK4cSjU7uoA7h/iQAsAbxmxHjtlTlL1IumYg/95hAfD8DM9D50RD+it/REbTIzN9vHDPgVovH45Uq1oSCB6DEA1snrPPMOvcDkPc1BEDC6DR+746cphmX/YF9YFIwKJNDOW5M9r9Eeb9VYZbcDQXMNyGFCHmeTTqvHYTsfKGAj1j1MWEzC1Vm+nrygvuu2LzHytnW7nbjFUhxADTQB3XAnmyK48mtXfW37iGWHX3nK6cKjsIqNJX9dVkSDoAySCO0XSu9mAx4jHKW2SmL43RJtIX/6vtC/n9YIqEd05D/pqbwUTSNQmHQnVmeXHcVaAK4mfDg0vBUToGCdBZJiXvPsRIeaBi7Q6sgm8UVSW1Y/43CU6qAQ==',
     }
 
+    ssh_authorized_key { 'syss@ANB':
+    user    => 'root',
+    type    => 'ssh-rsa',
+    key     => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQC72f6F+iES5/6CX/9/hZokQaYWBcXjQ+zwe/EH83HMbRvGFss5tzZJoL5uPomjOW5eroCGFGVX1XDa1srCS7Y45hpF7BAGT7vZu+ttNySdrnaLsZX31s4YF23f4HVMt/LPkvKsqQmnvm0FbothvKHZT6pUmsv7n5RRLTJfHTkTalHFZDqXvie8Sl1Z25tRFb6mTKm0ESZHITPTNC/mELfjmCvTep13U9eP1fcr2NG32RYVkH1DbleMSs3hUTVyo2tyddY7wIriKykIZpYawMg7ZYRoD4EOSoO9UIOFyMGDhW/ednH/5UszRqCRJy1UDcXull2Khwl7dx2Ws6tqat8P'
+    }
 
     #this is unsecure
 

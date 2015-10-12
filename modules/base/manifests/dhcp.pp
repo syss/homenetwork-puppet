@@ -18,5 +18,6 @@ class base::dhcp {
         'rpi1':     mac => "b8:27:eb:a2:06:59", ip => "10.0.0.12";
         'retropie': mac => "b8:27:eb:d2:00:8a", ip => "10.0.0.21";
         'printer':  mac => "00:14:38:95:a6:ad", ip => "10.0.0.31";
+        'tv':       mac => "00:23:8e:fd:1d:d6", ip => "10.0.0.2";
     }
 }

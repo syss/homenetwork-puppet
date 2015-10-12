@@ -8,36 +8,39 @@ class base::dns {
         forwarders  => ['8.8.8.8','8.8.4.4'],
     }
 
-    dns::zone { 'sue.ss':
+    ::dns::zone { 'sue.ss':
         static_records  => true,
     }
-    dns::record {'a1.sue.ss':
+    ::dns::record {'a1.sue.ss':
         target  => '10.0.0.1',
         type    => 'A',
     }
-    dns::record {'cubox.sue.ss':
+    ::dns::record {'tv.sue.ss':
+        target  => '10.0.0.2',
+        type    => 'A',
+    }
+    ::dns::record {'cubox.sue.ss':
         target  => '10.0.0.11',
         type    => 'A',
     }
-    dns::record {'rpi1.sue.ss':
+    ::dns::record {'rpi1.sue.ss':
         target  => '10.0.0.12',
         type    =>  'A',
     }
-    dns::record {'retropie.sue.ss':
+    ::dns::record {'retropie.sue.ss':
         target  => '10.0.0.21',
         type    =>  'A',
     }
-    dns::record {'printer.sue.ss':
+    ::dns::record {'printer.sue.ss':
         target  => '10.0.0.31',
         type    =>  'A',
     }
-    dns::record {'ns0.sue.ss':
+    ::dns::record {'ns0.sue.ss':
         target  => 'cubox.sue.ss',
         type    =>  'CNAME',
     }
-    dns::record {'gw.sue.ss':
+    ::dns::record {'gw.sue.ss':
         target  => 'a1.sue.ss',
         type    =>  'CNAME',
     }
-
 }
