@@ -3,3 +3,4 @@ classes:
   - base::file_server
   - base::dhcp
   - base::dns
+  - base::web_router

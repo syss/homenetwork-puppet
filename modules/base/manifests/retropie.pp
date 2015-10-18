@@ -3,9 +3,13 @@ class base::retropie {
     $xboxinit = '/etc/init.d/xboxdrv'
     $xboxetc = '/etc/default/xboxdrv'
 
+    package {'xboxdrv':
+        ensure  => present,
+    }
+
     #this only gives info with -d debug option
     rsync::get { '/home/pi/RetroPie/roms':
-        source  => 'data@puppet:/data/data/Games/_Roms',
+        source  => 'data@cubox:/data/data/Games/_Roms',
         purge   => false,
     }
 
