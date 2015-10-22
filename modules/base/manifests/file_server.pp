@@ -44,6 +44,7 @@ class base::file_server {
         remounts    => true,
     }
 
+    #speedup transfer between client with compression=no (arm devices are weak and LAN is fast), reduced cipher to aes128-ctr
     #root@rpi1:/mnt/fts300gb /mnt/fts300gb   fuse.sshfs _netdev,user,idmap=user,transform_symlinks,identityfile=/root/.ssh/id_rsa,allow_other,    default_permissions,uid=1000,gid=1000 0 0
     mount { 'RPI1':
         name        => '/mnt/fts300gb',
@@ -51,7 +52,7 @@ class base::file_server {
         atboot      => true,
         fstype      => 'fuse.sshfs',
         device      => 'root@rpi1:/mnt/fts300gb',
-        options     => 'nofail,_netdev,user,idmap=user,transform_symlinks,identityfile=/root/.ssh/id_rsa,allow_other,default_permissions,uid=1000,gid=1000',
+        options     => 'nofail,_netdev,user,idmap=user,transform_symlinks,ciphers=aes128-ctr,compression=no,identityfile=/root/.ssh/id_rsa,allow_other,default_permissions,uid=1000,gid=1000',
         remounts    => true,
     }
     package {'minidlna':
