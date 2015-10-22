@@ -24,7 +24,7 @@ class base::download_server {
         ensure      => present,
         provider    => git,
         source      => 'https://github.com/pyload/pyload',
-        revision   => 'stable',
+        revision    => 'stable',
         force       => true,
     }
 
@@ -37,8 +37,33 @@ class base::download_server {
         ensure  => directory,
     }
 
+    #ensure that pyload always has all rights on this folder so it can start correctly
+    file {'/mnt/fts300gb/var/pyload':
+        ensure  => directory,
+        owner   => 'pyload',
+        group   => 'pyload',
+        recurse => true,
+    }
+
     file {'/opt/pyload/module/config/configdir':
         ensure  => file,
         content => '/mnt/fts300gb/var/pyload',
+    }
+
+    #block traffic for BT for better internetz performance
+    file {'/root/block-bt.sh':
+        ensure  => file,
+        content => file("$module_name/rtorrent/block-bt.sh"),
+        owner   => 'root',
+        group   => 'root',
+        mode    => 700,
+    }
+
+    file {'/root/unblock-bt.sh':
+        ensure  => file,
+        content => file("$module_name/rtorrent/unblock-bt.sh"),
+        owner   => 'root',
+        group   => 'root',
+        mode    => 700,
     }
 }

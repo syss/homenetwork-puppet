@@ -6,3 +6,15 @@ classes:
   - rtorrent
 
 aptcacherng::cachedir:  "/mnt/fts300gb/var/cache/apt-cacher-ng"
+network::interfaces_hash:
+  br0:
+    ipaddress: '10.0.0.8'
+    netmask:   '255.255.255.0'
+    gateway:   '10.0.0.1'
+    network:   '10.0.0.0'
+    manage_order: '80'
+    bridge_ports: 'wlan0 eth0'
+
+  wlan0:
+    allow_hotplug: 'wlan0'
+    manage_order:  '20'

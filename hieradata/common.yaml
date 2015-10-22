@@ -2,3 +2,15 @@
 classes:
   - base
   - apt
+#  - network
+
+network::interfaces_hash:
+  lo:
+    address: '127.0.0.1'
+    method:  'loopback'
+    manage_order: '01'
+  eth0:
+    enable_dhcp: true
+    allow_hotplug: 'eth0'
+    manage_order: '10'
+
