@@ -1,5 +1,40 @@
 class base::download_server {
 
+    $packages = ['sysfsutils','cpufrequtils']
+
+    ensure_packages ($packages)
+
+    file {'/root/letsencrypt-renew.sh':
+        ensure  => file,
+        content => file("$module_name/letsencrypt-renew.sh"),
+        owner   => root,
+        group   => root,
+        mode    => '744',
+    }
+
+    cron {'letsencrypt-renew':
+        command => '/root/letsencrypt-renew.sh',
+        user    => root,
+        hour    => 1,
+        minute  => 0,
+    }
+
+    file {'/etc/sysfs.conf':
+        ensure  => file,
+        content => file("$module_name/download_server_sysfs.conf"),
+        owner   => root,
+        group   => root,
+        mode    => '644',
+    }
+
+    file {'/etc/default/cpufrequtils':
+        ensure  => file,
+        content => file("$module_name/cpufrequtils"),
+        owner   => root,
+        group   => root,
+        mode    => '644',
+    }
+
     file {'/etc/hdparm.conf':
         ensure  => file,
         content => file("$module_name/hdparm-download_server.conf"),
@@ -10,6 +45,15 @@ class base::download_server {
         subscribe => File['/etc/hdparm.conf'],
     }
 
+    mount { '/':
+        name        => '/',
+        ensure      => mounted,
+        atboot      => true,
+        fstype      => 'ext4',
+        device      => '/dev/mmcblk0p2',
+        options     => 'defaults,nofail,rw',
+        remounts    => true,
+    }
     mount { 'SCRATCH':
         name        => '/mnt/fts300gb',
         ensure      => mounted,

@@ -4,9 +4,17 @@ class base::file_server {
             command => "rsync -aAXv --exclude={\"/dev/*\",\"/proc/*\",\"/sys/*\",\"/tmp/*\",\"/run/*\",\"/mnt/*\",\"/media/*\",\"/lost+found\",  \"/data\"} /* /data/data/HomeNetworkBackup/${fqdn}/backup-fs",
             user    => root,
             hour    => 3,
+            minute  => 0,
             weekday => 1,
     }
 
+    cron { compress-reports:
+            command => "xz /var/lib/puppet/reports/*/*.yaml",
+            user    => puppet,
+            hour    => 1,
+            minute  => 0,
+    }
+    
     file {'/etc/hdparm.conf':
         ensure  => file,
         content => file("$module_name/hdparm-file_server.conf"),
