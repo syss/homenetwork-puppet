@@ -12,7 +12,7 @@ class base::dns {
         static_records  => true,
     }
     ::dns::record {'a1.sue.ss':
-        target  => '10.0.0.1',
+        target  => '10.0.0.138',
         type    => 'A',
     }
     ::dns::record {'tv.sue.ss':
@@ -41,6 +41,10 @@ class base::dns {
     }
     ::dns::record {'gw.sue.ss':
         target  => 'a1.sue.ss',
+        type    =>  'CNAME',
+    }
+    ::dns::record {'puppet.sue.ss':
+        target  => 'cubox.sue.ss',
         type    =>  'CNAME',
     }
 }

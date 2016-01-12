@@ -23,6 +23,12 @@ class base {
         ensure  => directory,
     }
 
+    ssh_authorized_key { 'syss@i7':
+        user    => ['root','data'],
+        type    => 'ssh-rsa',
+        key     => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDH10b3OQQrVv50coK2EDDWB9fVG91wECknhbAnVlJr+kejIDRO+2Z4Bp92CgNyHmcMEsY82gwNBxnUdwcQiii1AUX2rL5FBXhs05eziKVZki3YWAaZq3BSScttpsUKbASIg5+LrGB/bjPG/sjs6eT/8/I2hsz9r216q/uytjsJut7A4ny2bVvFz0uLibeslIxdrf2Zxz8aakdWs6mz5uqPQhe3+HpIzrd1+jh5xhslX41wOVOnzyzxU4FdojmSAMUwXGOLnIgAgL4RQd3P+pDNJ2jRx8OluEonDpXAYWQtazEqKK7Mi4bYytJMhOPqkoJn0KgzwXEkLqqR21MhB+ll',
+    }
+
     ssh_authorized_key { 'root@rpi1':
         user    => ['root','data'],
         type    => 'ssh-rsa',
