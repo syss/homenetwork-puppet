@@ -13,21 +13,25 @@
 ### END INIT INFO
 
 # Starts and stops the pyload daemon.
-
 INSTDIR="/opt/pyload"
 
 HOMEDIR=$(<${INSTDIR}/module/config/configdir)
 DAEMON="${INSTDIR}/pyLoadCore.py --daemon"
-PIDFILE="${HOMEDIR}/pyload.pid"
-USER="pyload"
+# need this, because pyload deletes and creates pidfile
+# once the pid file is deleted, it can't create it in /var/run
+PIDDIR=/var/run/pyload
+PIDFILE=$PIDDIR/pyload.pid
+USER=pyload
 
 . /lib/lsb/init-functions
 
 start() {
     log_daemon_msg "Starting pyLoad server"
 
-    sudo -u $USER $DAEMON -p $PIDFILE
-    
+    mkdir -p $PIDDIR
+    chown $USER $PIDDIR
+    su $USER -c "$DAEMON -p $PIDFILE"
+
     if [ $? != 0 ]; then
         log_end_msg 1
         exit 1

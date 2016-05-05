@@ -8,12 +8,12 @@ class base::file_server {
             weekday => 1,
     }
 
-    cron { compress-reports:
-            command => "xz /var/lib/puppet/reports/*/*.yaml",
-            user    => puppet,
-            hour    => 1,
-            minute  => 0,
-    }
+    #cron { compress-reports:
+    #        command => "xz /var/lib/puppet/reports/*/*.yaml",
+    #        user    => puppet,
+    #        hour    => 1,
+    #        minute  => 0,
+    #}
     
     file {'/etc/hdparm.conf':
         ensure  => file,
@@ -48,7 +48,7 @@ class base::file_server {
         atboot      => true,
         fstype      => 'ext4',
         device      => 'LABEL=DATA4',
-        options     => 'auto,rw,noatime',
+        options     => 'auto,rw,noatime,nofail',
         remounts    => true,
     }
 
@@ -60,9 +60,10 @@ class base::file_server {
         atboot      => true,
         fstype      => 'fuse.sshfs',
         device      => 'root@rpi1:/mnt/fts300gb',
-        options     => 'nofail,_netdev,user,idmap=user,transform_symlinks,ciphers=aes128-ctr,compression=no,identityfile=/root/.ssh/id_rsa,allow_other,default_permissions,uid=1000,gid=1000',
+        options     => '_netdev,user,idmap=user,transform_symlinks,ciphers=aes128-ctr,compression=no,identityfile=/root/.ssh/id_rsa,allow_other,default_permissions,uid=1000,gid=1000',
         remounts    => true,
-    }
+    } 
+
     package {'minidlna':
         ensure  => present,
     }
