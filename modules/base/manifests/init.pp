@@ -1,5 +1,5 @@
 class base {
-	$packages = ['htop', 'vim', 'nload', 'unp', 'hdparm', 'vim-puppet', 'git', 'nmap', 'rsync', 'lsof', 'screen', 'fail2ban']
+	$packages = ['htop', 'vim', 'nload', 'unp', 'hdparm', 'vim-puppet', 'git', 'nmap', 'rsync', 'lsof', 'screen', 'fail2ban', 'iproute2']
 
 	ensure_packages ($packages)
 	

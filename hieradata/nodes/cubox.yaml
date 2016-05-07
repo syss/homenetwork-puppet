@@ -3,7 +3,7 @@ classes:
   - base::file_server
   - base::dhcp
   - base::dns
-    #  - base::web_router
+  - base::web_router
 
 network::interfaces_hash:
   eth0:

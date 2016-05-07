@@ -52,6 +52,30 @@ class base::dns {
         target  => 'cubox.sue.ss',
         type    =>  'CNAME',
     }
+    ::dns::record {'dlna.sue.ss':
+        target  => 'cubox.sue.ss',
+        type    =>  'CNAME',
+    }
+    ::dns::record {'dl.sue.ss':
+        target  => 'cubox.sue.ss',
+        type    =>  'CNAME',
+    }
+    ::dns::record {'pyload.sue.ss':
+        target  => 'cubox.sue.ss',
+        type    =>  'CNAME',
+    }
+    ::dns::record {'torrent.sue.ss':
+        target  => 'cubox.sue.ss',
+        type    =>  'CNAME',
+    }
+    ::dns::record {'rtorrent.sue.ss':
+        target  => 'cubox.sue.ss',
+        type    =>  'CNAME',
+    }
+    ::dns::record {'apt-proxy.sue.ss':
+        target  => 'cubox.sue.ss',
+        type    =>  'CNAME',
+    }
     ::dns::zone { 'ngm.highway.telekom.at':
         static_records  => true,
     }

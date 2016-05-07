@@ -1,28 +1,44 @@
 class base::web_router {
     class { 'apache': }
 
-    apache::vhost { 'cubox.sue.ss':
+    apache::vhost { 'apt-proxy.sue.ss':
         port            => '80',
+        serveraliases   => ['apt-proxy'],
         docroot         => '/var/www',
         docroot_owner   => 'www-data',
         docroot_group   => 'www-data',
         proxy_pass      => [
-            { 'path' => '/rtorrent',    'url' => 'http://rpi1.sue.ss/' },
-            { 'path' => '/pyload',      'url' => 'http://rpi1.sue.ss:8000/' },
-            { 'path' => '/dlna',        'url' => 'http://cubox.sue.ss:8200/' },
-            { 'path' => '/apt-proxy',   'url' => 'http://rpi1.sue.ss:3142/' },
+            { 'path' => '/',   'url' => 'http://rpi1.sue.ss:3142/' },
         ],
-        rewrites        => [
-            {
-                comment         => 'rtorrent',
-                rewrite_cond    => ['%{HTTP_REFERER} ^http://%{SERVER_NAME}/rtorrent/$'],
-                rewrite_rule    => ['^/?(.*) http://%{SERVER_NAME}/rtorrent/$1 [P,L]'],
-            },
-            {
-                comment         => 'pyload',
-                rewrite_cond    => ['%{HTTP_REFERER} %{SERVER_NAME}/pyload/$'],
-                rewrite_rule    => ['^/?(.*) http://%{SERVER_NAME}/pyload/$1 [P,L]'],
-            },
+    }
+    apache::vhost { 'torrent.sue.ss':
+        port            => '80',
+        serveraliases   => ['torrent', 'rtorrent'],
+        docroot         => '/var/www',
+        docroot_owner   => 'www-data',
+        docroot_group   => 'www-data',
+        proxy_pass      => [
+            { 'path' => '/',        'url' => 'http://rpi1.sue.ss/' },
+        ],
+    }
+    apache::vhost { 'dl.sue.ss':
+        port            => '80',
+        serveraliases   => ['dl','pyload','pyload.sue.ss'],
+        docroot         => '/var/www',
+        docroot_owner   => 'www-data',
+        docroot_group   => 'www-data',
+        proxy_pass      => [
+            { 'path' => '/',        'url' => 'http://rpi1.sue.ss:8000/' },
+        ],
+    }
+    apache::vhost { 'dlna.sue.ss':
+        port            => '80',
+        serveraliases   => ['dlna'],
+        docroot         => '/var/www',
+        docroot_owner   => 'www-data',
+        docroot_group   => 'www-data',
+        proxy_pass      => [
+            { 'path' => '/',        'url' => 'http://cubox.sue.ss:8200/' },
         ],
     }
 }
