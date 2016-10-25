@@ -47,7 +47,7 @@ stop() {
     
     if [ $? != 0 ]; then
         log_end_msg 1
-#        exit 1
+        exit 1
     else
         log_end_msg 0
     fi

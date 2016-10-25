@@ -60,7 +60,7 @@ class base::file_server {
         atboot      => true,
         fstype      => 'fuse.sshfs',
         device      => 'root@rpi1:/mnt/fts300gb',
-        options     => '_netdev,user,idmap=user,transform_symlinks,ciphers=aes128-ctr,compression=no,identityfile=/root/.ssh/id_rsa,allow_other,default_permissions,uid=1000,gid=1000',
+        options     => '_netdev,user,idmap=user,transform_symlinks,ciphers=arcfour,compression=no,identityfile=/root/.ssh/id_rsa,allow_other,default_permissions,uid=1000,gid=1000',
         remounts    => true,
     } 
 
