@@ -28,6 +28,7 @@ USER=pyload
 start() {
     log_daemon_msg "Starting pyLoad server"
 
+    rm -rf "$HOMEDIR"/pyload.pid 2> /dev/null
     mkdir -p $PIDDIR
     chown $USER $PIDDIR
     su $USER -c "$DAEMON -p $PIDFILE"
@@ -47,7 +48,7 @@ stop() {
     
     if [ $? != 0 ]; then
         log_end_msg 1
-#        exit 1
+        exit 1
     else
         log_end_msg 0
     fi

@@ -50,6 +50,12 @@ class base::file_server {
         device      => 'LABEL=DATA4',
         options     => 'auto,rw,noatime,nofail',
         remounts    => true,
+    } ->
+
+    file { '/home/data':
+        ensure  => 'link',
+        target  => '/data/data',
+        require => User['data'],
     }
 
     #speedup transfer between client with compression=no (arm devices are weak and LAN is fast), reduced cipher to aes128-ctr
@@ -60,7 +66,7 @@ class base::file_server {
         atboot      => true,
         fstype      => 'fuse.sshfs',
         device      => 'root@rpi1:/mnt/fts300gb',
-        options     => '_netdev,user,idmap=user,transform_symlinks,ciphers=aes128-ctr,compression=no,identityfile=/root/.ssh/id_rsa,allow_other,default_permissions,uid=1000,gid=1000',
+        options     => '_netdev,user,idmap=user,transform_symlinks,ciphers=arcfour,compression=no,identityfile=/root/.ssh/id_rsa,allow_other,default_permissions,uid=1000,gid=1000',
         remounts    => true,
     } 
 

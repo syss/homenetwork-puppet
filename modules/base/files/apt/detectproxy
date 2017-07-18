@@ -37,8 +37,8 @@ show_proxy_messages=1
 # be available on the top. If no proxy is available, a direct connection will
 # be used
 try_proxies=(
-rpi1.sue.ss:3142
-10.0.0.12:3142
+rpi1.sue.ss:4242
+10.0.0.12:4242
 )
 
 print_msg() {

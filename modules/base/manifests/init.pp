@@ -1,5 +1,5 @@
 class base {
-	$packages = ['htop', 'vim', 'nload', 'unp', 'hdparm', 'vim-puppet', 'git', 'nmap', 'rsync', 'lsof', 'screen', 'fail2ban', 'iproute2']
+	$packages = ['htop', 'vim', 'nload', 'unp', 'hdparm', 'vim-puppet', 'git', 'nmap', 'rsync', 'lsof', 'screen', 'fail2ban', 'iproute2', 'haveged']
 
 	ensure_packages ($packages)
 	
@@ -15,7 +15,7 @@ class base {
     }
 
     file {'/etc/apt/apt.conf.d/01proxy':
-        ensure  => file,
+        ensure  => present,
         content => file("$module_name/apt/01proxy"),
     }
 
@@ -23,8 +23,21 @@ class base {
         ensure  => directory,
     }
 
+    user { 'data':
+        ensure  => 'present',
+        comment => 'Technical user for data management',
+        groups  => 'data',
+        uid     => '500',
+        gid     => '500',
+        password    => '$6$xBcWOz7C$GyqNVRAMfOxD21OLM8bYIFLMpXC2qAv7GoJ21iUlkX2lGwEs2WpiTmPnhd5bTFuJeQjsaLxtP/av3yeS7L4Cq0',
+        password_min_age    => '0',
+        password_max_age    => '99999',
+        shell   => '/bin/bash',
+        home    => '/home/data',
+    }
+
     ssh_authorized_key { 'syss@i7':
-        user    => ['root','data'],
+        user    => ['root','data','syss'],
         type    => 'ssh-rsa',
         key     => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDH10b3OQQrVv50coK2EDDWB9fVG91wECknhbAnVlJr+kejIDRO+2Z4Bp92CgNyHmcMEsY82gwNBxnUdwcQiii1AUX2rL5FBXhs05eziKVZki3YWAaZq3BSScttpsUKbASIg5+LrGB/bjPG/sjs6eT/8/I2hsz9r216q/uytjsJut7A4ny2bVvFz0uLibeslIxdrf2Zxz8aakdWs6mz5uqPQhe3+HpIzrd1+jh5xhslX41wOVOnzyzxU4FdojmSAMUwXGOLnIgAgL4RQd3P+pDNJ2jRx8OluEonDpXAYWQtazEqKK7Mi4bYytJMhOPqkoJn0KgzwXEkLqqR21MhB+ll',
     }
@@ -36,7 +49,7 @@ class base {
     }
 
     ssh_authorized_key { 'root@cubox':
-        user    => 'root',
+        user    => ['root','syss'],
         type    => 'ssh-rsa',
         key     => 'AAAAB3NzaC1yc2EAAAADAQABAAACAQC4PPM13TMJ154Tl3Uy52r+/3+lnNkOMlS6RMfb4MQVvfcCj7k7fa4HMsgMM5/18PyGigWrgtO+hK63xlDdO5dy+jcwfACo4kjSAtgR/4OiMeBkI3gKSvGUVhJgh8sO+It9o/0eOkqWXhoB4N8lqGkI8NIuJo3YLiVML4verVUiA4Rb2FJhPFycRGDWMA1BI3bY3QUSlONFoHdiKKvS9oAfQl6Ij86TWaboZA5LKhHinHOV3J55rQkHu1eg7d4De/63XpT76WiexG0mqzuIl641AOU/QJKjv+zOw0xAUqv0FbhygAdAf3868D3YXK4cSjU7uoA7h/iQAsAbxmxHjtlTlL1IumYg/95hAfD8DM9D50RD+it/REbTIzN9vHDPgVovH45Uq1oSCB6DEA1snrPPMOvcDkPc1BEDC6DR+746cphmX/YF9YFIwKJNDOW5M9r9Eeb9VYZbcDQXMNyGFCHmeTTqvHYTsfKGAj1j1MWEzC1Vm+nrygvuu2LzHytnW7nbjFUhxADTQB3XAnmyK48mtXfW37iGWHX3nK6cKjsIqNJX9dVkSDoAySCO0XSu9mAx4jHKW2SmL43RJtIX/6vtC/n9YIqEd05D/pqbwUTSNQmHQnVmeXHcVaAK4mfDg0vBUToGCdBZJiXvPsRIeaBi7Q6sgm8UVSW1Y/43CU6qAQ==',
     }

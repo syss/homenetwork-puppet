@@ -63,6 +63,14 @@ class base::download_server {
         options     => 'defaults,nofail',
         remounts    => true,
     }
+    mount { 'SWAP':
+        name        => 'none',
+        ensure      => mounted,
+        atboot      => true,
+        fstype      => 'swap',
+        device      => '/var/cache/swap/myswap',
+        options     => 'default',
+    }
 
     vcsrepo {'/opt/pyload':
         ensure      => present,

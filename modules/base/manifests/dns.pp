@@ -6,7 +6,6 @@ class base::dns {
 
     class { '::dns':
         forwarders  => ['8.8.8.8','8.8.4.4'],
-        #forwarders  => ['10.0.0.138','8.8.8.8','8.8.4.4'],
     }
 
     ::dns::zone { 'sue.ss':
@@ -33,7 +32,7 @@ class base::dns {
         type    =>  'A',
     }
     ::dns::record {'osmc.sue.ss':
-        target  => '10.0.0.22',
+        target  => '10.0.0.21',
         type    =>  'A',
     }
     ::dns::record {'printer.sue.ss':
