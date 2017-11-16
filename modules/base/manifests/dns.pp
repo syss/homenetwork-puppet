@@ -5,7 +5,8 @@ class base::dns {
     }
 
     class { '::dns':
-        forwarders  => ['8.8.8.8','8.8.4.4'],
+        #use opendns instead of 10e100
+        forwarders  => ['208.67.222.222','208.67.220.220'],
     }
 
     ::dns::zone { 'sue.ss':
@@ -25,6 +26,10 @@ class base::dns {
     }
     ::dns::record {'rpi1.sue.ss':
         target  => '10.0.0.12',
+        type    =>  'A',
+    }
+    ::dns::record {'rpi2.sue.ss':
+        target  => '10.0.0.13',
         type    =>  'A',
     }
     ::dns::record {'retropie.sue.ss':
@@ -75,6 +80,8 @@ class base::dns {
         target  => 'cubox.sue.ss',
         type    =>  'CNAME',
     }
+
+    #A1 specific DNS entries for properly watching TV
     ::dns::zone { 'ngm.highway.telekom.at':
         static_records  => true,
     }

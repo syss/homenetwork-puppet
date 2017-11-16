@@ -23,13 +23,18 @@ class base {
         ensure  => directory,
     }
 
+    group { 'data':
+        ensure  => 'present',
+        #comment => 'Technical group for data management',
+        gid     => '500',
+    }
+
     user { 'data':
         ensure  => 'present',
         comment => 'Technical user for data management',
         groups  => 'data',
         uid     => '500',
-        gid     => '500',
-        password    => '$6$xBcWOz7C$GyqNVRAMfOxD21OLM8bYIFLMpXC2qAv7GoJ21iUlkX2lGwEs2WpiTmPnhd5bTFuJeQjsaLxtP/av3yeS7L4Cq0',
+        password    => '$6$fB.dDMvZ$Ce01019TQbrx6fa3Q39EbuxsLXBC9d2RBfSvDgl80h/BvonbyJDs9.9iH28OtJk44i0gXgLZyHJq0/8snZvP00',
         password_min_age    => '0',
         password_max_age    => '99999',
         shell   => '/bin/bash',
@@ -43,6 +48,11 @@ class base {
     }
 
     ssh_authorized_key { 'root@rpi1':
+        user    => ['root','data'],
+        type    => 'ssh-rsa',
+        key     => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQCjVwFi9nKovwYk00W5n5H13+bm4lxci7r7mwlXnxTktpPIsfED8k5wpgXJBAvoCAYkLs9ss7es+V2SSaIWUwtAJtgGYGWjIlEdEyndcWTDsX5gfxZXfVQ4pqSReZKqkxn5XXaIzg7cyFt4dIvzTxQ+IlYMYhPZC/1Dn5JVixjW7L5n3LaJjGJ8rN0Hp4oNST735IhwWYT8Q8y731GURxBM2o/ZjNnWwRla/t2Y+zvRW2VUkP/W9WI0Krfc0Dj3h+N9D145LZs4CvtWOh26fJMI5oS6bTNon55bSa+nyxBb8K4ZjSLBpm+JhXKNKKadvIMWlJbAK8Cwvynzk3TqlY5N',
+    }
+    ssh_authorized_key { 'root@rpi2':
         user    => ['root','data'],
         type    => 'ssh-rsa',
         key     => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQCjVwFi9nKovwYk00W5n5H13+bm4lxci7r7mwlXnxTktpPIsfED8k5wpgXJBAvoCAYkLs9ss7es+V2SSaIWUwtAJtgGYGWjIlEdEyndcWTDsX5gfxZXfVQ4pqSReZKqkxn5XXaIzg7cyFt4dIvzTxQ+IlYMYhPZC/1Dn5JVixjW7L5n3LaJjGJ8rN0Hp4oNST735IhwWYT8Q8y731GURxBM2o/ZjNnWwRla/t2Y+zvRW2VUkP/W9WI0Krfc0Dj3h+N9D145LZs4CvtWOh26fJMI5oS6bTNon55bSa+nyxBb8K4ZjSLBpm+JhXKNKKadvIMWlJbAK8Cwvynzk3TqlY5N',

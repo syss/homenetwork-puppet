@@ -16,7 +16,7 @@
 INSTDIR="/opt/pyload"
 
 HOMEDIR=$(<${INSTDIR}/module/config/configdir)
-DAEMON="${INSTDIR}/pyLoadCore.py --daemon"
+DAEMON="${INSTDIR}/pyLoadCore.py"
 # need this, because pyload deletes and creates pidfile
 # once the pid file is deleted, it can't create it in /var/run
 PIDDIR=/var/run/pyload
@@ -29,9 +29,12 @@ start() {
     log_daemon_msg "Starting pyLoad server"
 
     rm -rf "$HOMEDIR"/pyload.pid 2> /dev/null
-    mkdir -p $PIDDIR
-    chown $USER $PIDDIR
-    su $USER -c "$DAEMON -p $PIDFILE"
+    mkdir -p "$PIDDIR"
+    chown "$USER" "$PIDDIR"
+    cd "$INSTDIR"
+    git pull
+    cd -
+    su "$USER" -c "$DAEMON --daemon -p $PIDFILE"
 
     if [ $? != 0 ]; then
         log_end_msg 1
@@ -44,7 +47,9 @@ start() {
 stop() {
     log_daemon_msg "Stoping pyLoad server"
 
-    $DAEMON -q
+    #"$DAEMON" -q
+    #quick and dirty. make this more beautiful
+    kill "$(cat "$PIDFILE")"
     
     if [ $? != 0 ]; then
         log_end_msg 1
@@ -56,29 +61,30 @@ stop() {
 
 case "$1" in
     start)
-	    start
-	;;
+        start
+    ;;
 
     stop)
-	    stop
-	;;
+        stop
+    ;;
 
     force-reload)
-	   stop
-	   sleep 5
-	   start
+       stop
+       #sleep 5
+       start
         ;;
 
     restart)
-	    stop
-	    sleep 2
-	    start
-	;;
+        stop
+        #sleep 2
+        start
+    ;;
 
     *)
-	echo "Usage: $0 {start|stop|restart|force-reload}"
-	exit 1
-	;;
+    echo "Usage: $0 {start|stop|restart|force-reload}"
+    exit 1
+    ;;
 esac
 
 exit 0
+

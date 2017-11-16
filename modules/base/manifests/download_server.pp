@@ -65,7 +65,7 @@ class base::download_server {
     }
     mount { 'SWAP':
         name        => 'none',
-        ensure      => mounted,
+        ensure      => absent,
         atboot      => true,
         fstype      => 'swap',
         device      => '/var/cache/swap/myswap',

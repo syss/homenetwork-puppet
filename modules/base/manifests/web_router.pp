@@ -8,7 +8,7 @@ class base::web_router {
         docroot_owner   => 'www-data',
         docroot_group   => 'www-data',
         proxy_pass      => [
-            { 'path' => '/',   'url' => 'http://rpi1.sue.ss:3142/' },
+            { 'path' => '/',   'url' => 'http://rpi2.sue.ss:3142/' },
         ],
     }
     apache::vhost { 'torrent.sue.ss':
@@ -18,7 +18,7 @@ class base::web_router {
         docroot_owner   => 'www-data',
         docroot_group   => 'www-data',
         proxy_pass      => [
-            { 'path' => '/',        'url' => 'http://rpi1.sue.ss/' },
+            { 'path' => '/',        'url' => 'http://rpi2.sue.ss/' },
         ],
     }
     apache::vhost { 'dl.sue.ss':
@@ -28,7 +28,7 @@ class base::web_router {
         docroot_owner   => 'www-data',
         docroot_group   => 'www-data',
         proxy_pass      => [
-            { 'path' => '/',        'url' => 'http://rpi1.sue.ss:8000/' },
+            { 'path' => '/',        'url' => 'http://rpi2.sue.ss:8000/' },
         ],
     }
     apache::vhost { 'dlna.sue.ss':

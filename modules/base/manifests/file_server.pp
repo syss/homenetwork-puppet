@@ -50,22 +50,31 @@ class base::file_server {
         device      => 'LABEL=DATA4',
         options     => 'auto,rw,noatime,nofail',
         remounts    => true,
-    } ->
-
-    file { '/home/data':
-        ensure  => 'link',
-        target  => '/data/data',
-        require => User['data'],
     }
 
+    file { '/data/data':
+        ensure  => directory,
+        owner   => 'data',
+        group   => 'data',
+        require => [User['data'],Group['data']],
+        mode    => '0750',
+        recurse => true,
+    }
+
+#    file { '/home/data':
+#        ensure  => 'link',
+#        target  => '/data/data',
+#        require => User['data'],
+#    }
+
     #speedup transfer between client with compression=no (arm devices are weak and LAN is fast), reduced cipher to aes128-ctr
-    #root@rpi1:/mnt/fts300gb /mnt/fts300gb   fuse.sshfs _netdev,user,idmap=user,transform_symlinks,identityfile=/root/.ssh/id_rsa,allow_other,    default_permissions,uid=1000,gid=1000 0 0
-    mount { 'RPI1':
+    #root@rpi2:/mnt/fts300gb /mnt/fts300gb   fuse.sshfs _netdev,user,idmap=user,transform_symlinks,identityfile=/root/.ssh/id_rsa,allow_other,    default_permissions,uid=1000,gid=1000 0 0
+    mount { 'RPI2':
         name        => '/mnt/fts300gb',
         ensure      => mounted,
         atboot      => true,
         fstype      => 'fuse.sshfs',
-        device      => 'root@rpi1:/mnt/fts300gb',
+        device      => 'root@rpi2:/mnt/fts300gb',
         options     => '_netdev,user,idmap=user,transform_symlinks,ciphers=arcfour,compression=no,identityfile=/root/.ssh/id_rsa,allow_other,default_permissions,uid=1000,gid=1000',
         remounts    => true,
     } 
@@ -133,5 +142,25 @@ class base::file_server {
         target  => '/data/data/Series/',
         owner   => 'data',
         group   => 'data',
+    }
+
+    class {'samba::server':
+        workgroup       =>  "$::domain",
+        server_string   =>  "$hostname Server",
+        interfaces      =>  "eth0 lo",
+        security        =>  'user',
+    }
+
+    samba::server::share { 'data':
+        comment              => "Data Share",
+        path                 => '/data/data',
+        guest_ok             => true,
+        #guest_account        => "guest",
+        browsable            => true,
+        writable             => true,
+        create_mask          => 0770,
+        directory_mask       => 0770,
+        force_group          => 'data',
+        force_user           => 'data',
     }
 }                                                 
